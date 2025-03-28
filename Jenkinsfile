@@ -26,8 +26,16 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh 'echo "Deploy step (simulasi)"'
-      }
+        sh '''
+            echo "🚀 Deploying app to ~/ci-deploy"
+            pm2 delete my-app || true
+            rm -rf ~/ci-deploy/*
+            cp -r * ~/ci-deploy/
+            cd ~/ci-deploy/
+            npm install
+            pm2 start index.js --name my-app
+            '''
+        }
     }
   }
 }
