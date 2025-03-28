@@ -25,16 +25,16 @@ pipeline {
     }
 
     stage('Deploy') {
-      steps {
-        sh '''
-            echo "🚀 Deploying app to ~/ci-deploy"
-            pm2 delete my-app || true
-            rm -rf ~/ci-deploy/*
-            cp -r * ~/ci-deploy/
-            cd ~/ci-deploy/
-            npm install
-            pm2 start index.js --name my-app
-            '''
+        steps {
+            sshagent(['deploy-ssh-key']) {
+                withCredentials([string(credentialsId: 'deploy-host-ip', variable: 'DEPLOY_HOST')]) {
+                    sh '''
+                    ssh rocky@$DEPLOY_HOST 'pm2 delete my-app || true && rm -rf ~/ci-deploy/*'
+                    scp -r * rocky@$DEPLOY_HOST:~/ci-deploy/
+                    ssh rocky@$DEPLOY_HOST 'cd ~/ci-deploy && npm install && pm2 start index.js --name my-app'
+                    '''
+                }
+            }
         }
     }
   }
