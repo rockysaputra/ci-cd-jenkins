@@ -41,14 +41,14 @@ pipeline {
       steps {
         sshagent(['deploy-ssh-key']) {
           withCredentials([string(credentialsId: 'deploy-host-ip', variable: 'DEPLOY_HOST')]) {
-            sh '''
-              ssh rocky@$DEPLOY_HOST '
-                docker pull $DOCKER_IMAGE &&
-                docker stop $APP_NAME || true &&
-                docker rm $APP_NAME || true &&
-                docker run -d --name $APP_NAME -p 3000:3000 $DOCKER_IMAGE
-              '
-            '''
+            sh """
+                ssh rocky@$DEPLOY_HOST \"
+                    docker pull $DOCKER_IMAGE &&
+                    docker stop $APP_NAME || true &&
+                    docker rm $APP_NAME || true &&
+                    docker run -d --name $APP_NAME -p 3000:3000 $DOCKER_IMAGE
+                \"
+            """
           }
         }
       }
