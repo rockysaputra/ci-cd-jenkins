@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     APP_NAME = "my-app"
-    DOCKER_IMAGE = "rockysaputra/myapp:latest"
+    DOCKER_IMAGE = "rockys009/myapp:latest"
   }
 
   tools {
