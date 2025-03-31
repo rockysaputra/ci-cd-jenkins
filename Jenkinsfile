@@ -38,6 +38,9 @@ pipeline {
     }
 
     stage('Deploy via Docker SSH') {
+      when{
+        branch 'main'
+      }
       steps {
         sshagent(['deploy-ssh-key']) {
           withCredentials([string(credentialsId: 'deploy-host-ip', variable: 'DEPLOY_HOST')]) {
