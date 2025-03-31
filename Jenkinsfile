@@ -2,8 +2,9 @@ pipeline {
   agent any
 
   environment {
-    APP_NAME = "my-app"
-    DOCKER_IMAGE = "rockys009/myapp:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+    BRANCH_NAME = "${env.BRANCH_NAME}"
+    APP_NAME = "my-app-${BRANCH_NAME}"
+    DOCKER_IMAGE = "rockys009/myapp:${BRANCH_NAME}"
   }
 
   tools {
