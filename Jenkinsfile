@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    BRANCH_NAME = "${env.BRANCH_NAME}"
+    BRANCH_NAME = "main"
     APP_NAME = "my-app-${BRANCH_NAME}"
     DOCKER_IMAGE = "rockys009/myapp:${BRANCH_NAME}"
   }
