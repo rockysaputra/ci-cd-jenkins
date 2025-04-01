@@ -5,6 +5,7 @@ pipeline {
     BRANCH_NAME = "${env.BRANCH_NAME}"
     APP_NAME = "my-app-${BRANCH_NAME}"
     DOCKER_IMAGE = "rockys009/myapp:${BRANCH_NAME}"
+    DOCKER_PORT = "${BRANCH_NAME == 'prod' ? '3001' : BRANCH_NAME == 'uat' ? '3002' : '3000'}"
   }
 
   tools {
@@ -54,7 +55,7 @@ pipeline {
                     docker pull $DOCKER_IMAGE &&
                     docker stop $APP_NAME || true &&
                     docker rm $APP_NAME || true &&
-                    docker run -d --name $APP_NAME -p 3000:3000 $DOCKER_IMAGE
+                    docker run -d --name $APP_NAME -p $DOCKER_PORT:3000 $DOCKER_IMAGE
                 \"
             """
           }
