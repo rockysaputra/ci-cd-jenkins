@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    BRANCH_NAME = "main"
+    BRANCH_NAME = "${env.BRANCH_NAME}"
     APP_NAME = "my-app-${BRANCH_NAME}"
     DOCKER_IMAGE = "rockys009/myapp:${BRANCH_NAME}"
   }
@@ -39,8 +39,12 @@ pipeline {
     }
 
     stage('Deploy via Docker SSH') {
-      when{
-        branch 'main'
+      when {
+        anyOf {
+          branch 'main'
+          branch 'uat'
+          branch 'prod'
+        }
       }
       steps {
         sshagent(['deploy-ssh-key']) {
